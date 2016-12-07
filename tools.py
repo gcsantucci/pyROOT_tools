@@ -1,5 +1,5 @@
 import ROOT
-from ROOT import gROOT, TCanvas, TF1, TFile, TTree, gRandom, TH1F, TH2F
+from ROOT import gROOT, TCanvas, TF1, TFile, TTree, gRandom, TH1F, TH2F, TLegend
 
 #############################################################################################     
 # Get the number of entries in a tree after some cut:
@@ -83,12 +83,37 @@ def DrawHist2D(c1, tree, var='', cut='', option='',
     del h1
     return c1
 
+#############################################################################################    
+# Set Stats Box:
+def SetStatsBox(stats):
+    ROOT.gStyle.SetOptStat("emr")
+    ROOT.gStyle.SetStatX(0.92);    # Top right corner.                   
+    ROOT.gStyle.SetStatY(0.92)
+    if not stats:
+        ROOT.gStyle.SetOptStat(0)
+
+#############################################################################################   
+# Get Legend Box:
+def GetLegend(h1, h2, name1, name2, title=None):
+    leg = TLegend(.73,.32,.97,.53)
+    leg.SetBorderSize(0)
+    leg.SetFillColor(0)
+    leg.SetFillStyle(0)
+    leg.SetTextFont(42)
+    leg.SetTextSize(0.035)
+    leg.AddEntry(h1, name1, 'L')
+    leg.AddEntry(h2, name2, 'L')
+    leg.Draw()
+
 #############################################################################################
 # Draw two histograms from two trees:
 def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='', 
                nbins=100, xmin=0, xmax=100,
                title='', xlabel='', ylabel='',
-               col1=2, col2=4, log=False, norm=False, save=False, show=True):
+               col1=2, col2=4, log=False, norm=False, save=False, show=True,
+               stats=True, leg=False):
+    SetStatsBox(stats)
+
     if not var2:
         var2 = var
 
@@ -106,6 +131,21 @@ def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='',
         h2.Scale(1/h2.Integral())
         h1.Draw()
         h2.Draw('SAMES')
+
+    if leg:
+        name1 =leg[0]
+        name2 =leg[1]
+        leg = TLegend(.7,.32,.94,.53)
+        leg.SetBorderSize(0)
+        leg.SetFillColor(0)
+        leg.SetFillStyle(0)
+        leg.SetTextFont(42)
+        leg.SetTextSize(0.035)
+        leg.AddEntry(h1, name1, 'L')
+        leg.AddEntry(h2, name2, 'L')
+        leg.Draw()
+        #GetLegend(h1, h2)   
+
     if show:
         c1.Draw()
     if save:
