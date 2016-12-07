@@ -1,8 +1,6 @@
 import ROOT
 from ROOT import gROOT, TCanvas, TF1, TFile, TTree, gRandom, TH1F, TH2F
 
-from list_of_cuts import mg
-
 #############################################################################################     
 # Get the number of entries in a tree after some cut:
 def GetEntries(tree, cut):
@@ -158,13 +156,8 @@ def GetTree(path='/Users/gabrielsantucci/Dropbox/PhD/SK/fiTQun_analysis/Knu_muGa
         tree.AddFriend(tree2, path+f2)
     return tree
 
-################################################################################## 
-# Runs Routine
-def pipeline(c1, tree1, tree2, col1, col2, 
-             i, var, cut1, cut2, nbins,xmin,xmax,
-             title,xlabel, sample, option=''):
-    pass
-####################################################################################
+##################################################################################
+# Prints different definitions of efficiencies given a sample and a cut:
 def eff(tree, cut='', sample=''):
     tot = GetEntries(tree, 'wallv > 200')
     tot_mg = GetEntries(tree, 'wallv > 200 && MuGamma')
@@ -177,19 +170,29 @@ def eff(tree, cut='', sample=''):
                                                                        round(100*dump/tot_mg, 2)))
 
     if sample:
-        tot_sample = GetEntries(tree, cut+sample+mg)
+        tot_sample = GetEntries(tree, cut+sample)
         print('With Respect to this sample inside FV: {0}/{1} = {2}%.'.format(int(dump),
                                                                        int(tot_sample),
                                                                        round(100*dump/tot_sample, 2)))
 
-######################################################################################
+##################################################################################
+# Prints the amount of rejected background given a sample and a cut:
 def bck(tree, cut='', sample=''):
     tot = GetEntries(tree, 'wallv > 200')
-    print('Total number of atm nu MC events inside true FV is {}.'.format(int(tot)))
     dump = GetEntries(tree, cut)
+    print('Total number of atm nu MC events inside true FV is {}.'.format(int(tot)))
     print('Rejection after this cut is {0}/{1} = {2}%.'.format(int(dump), int(tot), 
                                                                round(100*dump/tot,2) ))
     if sample:
         tot_sample = GetEntries(tree, cut+sample)
         print('Rejection with respect to this sample inside FV: {0}/{1} = {2}%.'.format(int(dump),int(tot_sample),round(100*dump/tot_sample, 2)))
 
+
+
+
+
+
+
+################################################################################## 
+if __name__ == "__main__":
+    pass
