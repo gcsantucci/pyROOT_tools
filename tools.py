@@ -161,16 +161,15 @@ def GetTree(path='/Users/gabrielsantucci/Dropbox/PhD/SK/fiTQun_analysis/Knu_muGa
 def eff(tree, cut='', sample=''):
     tot = GetEntries(tree, 'wallv > 200')
     tot_mg = GetEntries(tree, 'wallv > 200 && MuGamma')
+    dump = GetEntries(tree, cut)
     print('Total number of PDK events inside true FV is {}.'.format(int(tot)))
     print('Total number of MuGamma events inside true FV is {}.'.format(int(tot_mg)))
-    dump = GetEntries(tree, cut)
     print('Efficiency after this cut is: {0}/{1} = {2}%.'.format(int(dump), int(tot), round(100*dump/tot, 2)))
     print('With Respect to MuGammas inside FV: {0}/{1} = {2}%.'.format(int(dump), 
                                                                        int(tot_mg),
                                                                        round(100*dump/tot_mg, 2)))
-
     if sample:
-        tot_sample = GetEntries(tree, cut+sample)
+        tot_sample = GetEntries(tree, sample)
         print('With Respect to this sample inside FV: {0}/{1} = {2}%.'.format(int(dump),
                                                                        int(tot_sample),
                                                                        round(100*dump/tot_sample, 2)))
@@ -184,7 +183,7 @@ def bck(tree, cut='', sample=''):
     print('Rejection after this cut is {0}/{1} = {2}%.'.format(int(dump), int(tot), 
                                                                round(100*dump/tot,2) ))
     if sample:
-        tot_sample = GetEntries(tree, cut+sample)
+        tot_sample = GetEntries(tree, sample)
         print('Rejection with respect to this sample inside FV: {0}/{1} = {2}%.'.format(int(dump),int(tot_sample),round(100*dump/tot_sample, 2)))
 
 
