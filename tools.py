@@ -49,8 +49,9 @@ def Draw(c1, tree, var='', cut='', option='', log=False):
 # Draw a histogram of a variable from a tree:
 def DrawHist(c1, tree, var='', cut='', option='',
              nbins=100, xmin=0, xmax=100,
-             title='', xlabel='', ylabel='', col=1, log=False, norm=False):
-
+             title='', xlabel='', ylabel='', col=1, log=False, norm=False,
+             stats=True, leg=False, save=False):
+    SetStatsBox(stats)
     h1 = Hist('h1', nbins, xmin, xmax, title, xlabel, ylabel)
     h1.SetLineColor(col)
     tree.Draw('{}>>h1'.format(var), cut, option)
@@ -59,7 +60,12 @@ def DrawHist(c1, tree, var='', cut='', option='',
     if norm:
         h1.Scale(1/h1.Integral())
         h1.Draw()
+    if leg:
+        leg = GetLegend([h1], leg)
+        leg.Draw()
     c1.Draw()
+    if save:
+        c1.SaveAs(save)
     c1.SetLogy(0)
     del h1
     return c1
@@ -94,16 +100,16 @@ def SetStatsBox(stats):
 
 #############################################################################################   
 # Get Legend Box:
-def GetLegend(h1, h2, name1, name2, title=None):
-    leg = TLegend(.73,.32,.97,.53)
+def GetLegend(h1, names, title=None):
+    leg = TLegend(.7,.32,.94,.53)
     leg.SetBorderSize(0)
     leg.SetFillColor(0)
     leg.SetFillStyle(0)
     leg.SetTextFont(42)
     leg.SetTextSize(0.035)
-    leg.AddEntry(h1, name1, 'L')
-    leg.AddEntry(h2, name2, 'L')
-    leg.Draw()
+    for h, name in zip(h1, names):
+        leg.AddEntry(h, name, 'L')
+    return leg
 
 #############################################################################################
 # Draw two histograms from two trees:
@@ -113,39 +119,24 @@ def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='',
                col1=2, col2=4, log=False, norm=False, save=False, show=True,
                stats=True, leg=False):
     SetStatsBox(stats)
-
     if not var2:
         var2 = var
-
     h1 = Hist('h1', nbins, xmin, xmax, title, xlabel, ylabel)
     h2 = Hist('h2', nbins, xmin, xmax)
     h1.SetLineColor(col1)
     h2.SetLineColor(col2)
     tree1.Draw("{}>>h1".format(var), cut1)
     tree2.Draw("{}>>h2".format(var2), cut2,"same")
-
-    if log:
-        c1.SetLogy(1)
     if norm:
         h1.Scale(1/h1.Integral())
         h2.Scale(1/h2.Integral())
         h1.Draw()
         h2.Draw('SAMES')
-
     if leg:
-        name1 =leg[0]
-        name2 =leg[1]
-        leg = TLegend(.7,.32,.94,.53)
-        leg.SetBorderSize(0)
-        leg.SetFillColor(0)
-        leg.SetFillStyle(0)
-        leg.SetTextFont(42)
-        leg.SetTextSize(0.035)
-        leg.AddEntry(h1, name1, 'L')
-        leg.AddEntry(h2, name2, 'L')
+        leg = GetLegend([h1, h2], leg)
         leg.Draw()
-        #GetLegend(h1, h2)   
-
+    if log:
+        c1.SetLogy(1)
     if show:
         c1.Draw()
     if save:
