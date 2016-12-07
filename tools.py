@@ -54,6 +54,7 @@ def DrawHist(c1, tree, var='', cut='', option='',
     SetStatsBox(stats)
     h1 = Hist('h1', nbins, xmin, xmax, title, xlabel, ylabel)
     h1.SetLineColor(col)
+    h1.SetLineWidth(2)
     tree.Draw('{}>>h1'.format(var), cut, option)
     if log:
         c1.SetLogy(1)
@@ -124,7 +125,9 @@ def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='',
     h1 = Hist('h1', nbins, xmin, xmax, title, xlabel, ylabel)
     h2 = Hist('h2', nbins, xmin, xmax)
     h1.SetLineColor(col1)
+    h1.SetLineWidth(2)
     h2.SetLineColor(col2)
+    h2.SetLineWidth(2)
     tree1.Draw("{}>>h1".format(var), cut1)
     tree2.Draw("{}>>h2".format(var2), cut2,"same")
     if norm:
