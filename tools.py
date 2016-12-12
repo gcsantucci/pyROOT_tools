@@ -103,6 +103,7 @@ def SetStatsBox(stats):
 # Get Legend Box:
 def GetLegend(h1, names, title=None):
     leg = TLegend(.7,.32,.94,.53)
+    #leg.SetHeader("The Legend Title")
     leg.SetBorderSize(0)
     leg.SetFillColor(0)
     leg.SetFillStyle(0)
@@ -190,42 +191,7 @@ def GetTree(path='/Users/gabrielsantucci/Dropbox/PhD/SK/fiTQun_analysis/Knu_muGa
         tree.AddFriend(tree2, path+f2)
     return tree
 
-##################################################################################
-# Prints different definitions of efficiencies given a sample and a cut:
-def eff(tree, cut='', sample=''):
-    tot = GetEntries(tree, 'wallv > 200')
-    tot_mg = GetEntries(tree, 'wallv > 200 && MuGamma')
-    dump = GetEntries(tree, cut)
-    print('Total number of PDK events inside true FV is {}.'.format(int(tot)))
-    print('Total number of MuGamma events inside true FV is {}.'.format(int(tot_mg)))
-    print('Efficiency after this cut is: {0}/{1} = {2}%.'.format(int(dump), int(tot), round(100*dump/tot, 2)))
-    print('With Respect to MuGammas inside FV: {0}/{1} = {2}%.'.format(int(dump), 
-                                                                       int(tot_mg),
-                                                                       round(100*dump/tot_mg, 2)))
-    if sample:
-        tot_sample = GetEntries(tree, sample)
-        print('With Respect to this sample inside FV: {0}/{1} = {2}%.'.format(int(dump),
-                                                                       int(tot_sample),
-                                                                       round(100*dump/tot_sample, 2)))
-
-##################################################################################
-# Prints the amount of rejected background given a sample and a cut:
-def bck(tree, cut='', sample=''):
-    tot = GetEntries(tree, 'wallv > 200')
-    dump = GetEntries(tree, cut)
-    print('Total number of atm nu MC events inside true FV is {}.'.format(int(tot)))
-    print('Rejection after this cut is {0}/{1} = {2}%.'.format(int(dump), int(tot), 
-                                                               round(100*dump/tot,2) ))
-    if sample:
-        tot_sample = GetEntries(tree, sample)
-        print('Rejection with respect to this sample inside FV: {0}/{1} = {2}%.'.format(int(dump),int(tot_sample),round(100*dump/tot_sample, 2)))
-
-
-
-
-
-
-
 ################################################################################## 
+
 if __name__ == "__main__":
     pass
