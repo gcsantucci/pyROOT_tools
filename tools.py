@@ -15,7 +15,30 @@ def DrawBox(h,x1,x2,y1,y2):
     st.SetY1NDC(y1)
     st.SetY2NDC(y2)
     st.SetOptStat(111);
-    return
+
+#############################################################################################            
+# Set Stats Box:                                                        
+def SetStatsBox(stats):
+    ROOT.gStyle.SetOptStat("emr")
+    ROOT.gStyle.SetStatX(0.92);    # Top right corner.           
+    ROOT.gStyle.SetStatY(0.92)
+    if not stats:
+        ROOT.gStyle.SetOptStat(0)
+
+#############################################################################################      
+# Get Legend Box:           
+def GetLegend(h1, names, title=None):
+    leg = TLegend(.7,.32,.94,.53)
+    if title:
+        leg.SetHeader(title)
+    leg.SetBorderSize(0)
+    leg.SetFillColor(0)
+    leg.SetFillStyle(0)
+    leg.SetTextFont(42)
+    leg.SetTextSize(0.035)
+    for h, name in zip(h1, names):
+        leg.AddEntry(h, name, 'L')
+    return leg
 
 #############################################################################################        
 # Save a figure
@@ -89,29 +112,6 @@ def DrawHist2D(c1, tree, var='', cut='', option='',
     c1.SetLogy(0)
     del h1
     return c1
-
-#############################################################################################    
-# Set Stats Box:
-def SetStatsBox(stats):
-    ROOT.gStyle.SetOptStat("emr")
-    ROOT.gStyle.SetStatX(0.92);    # Top right corner.                   
-    ROOT.gStyle.SetStatY(0.92)
-    if not stats:
-        ROOT.gStyle.SetOptStat(0)
-
-#############################################################################################   
-# Get Legend Box:
-def GetLegend(h1, names, title=None):
-    leg = TLegend(.7,.32,.94,.53)
-    #leg.SetHeader("The Legend Title")
-    leg.SetBorderSize(0)
-    leg.SetFillColor(0)
-    leg.SetFillStyle(0)
-    leg.SetTextFont(42)
-    leg.SetTextSize(0.035)
-    for h, name in zip(h1, names):
-        leg.AddEntry(h, name, 'L')
-    return leg
 
 #############################################################################################
 # Draw two histograms from two trees:
