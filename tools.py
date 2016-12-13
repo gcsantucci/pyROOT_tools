@@ -43,7 +43,7 @@ def GetLegend(h1, names, title=None):
 ################################################################################## 
 # Get a TLine:
 def GetLine(l):
-    x1,y1,x2,y2= l
+    x1,y1,x2,y2 = l
     return TLine(x1,y1,x2,y2)
 
 #############################################################################################        
@@ -146,8 +146,8 @@ def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='',
         leg = GetLegend([h1, h2], leg)
         leg.Draw()
     if line:
-        for l in line:
-            l = GetLine(l)
+        lines = [GetLine(l) for l in line]
+        for l in lines:
             l.Draw()
     if log:
         c1.SetLogy(1)
