@@ -1,5 +1,5 @@
 import ROOT
-from ROOT import gROOT, TCanvas, TF1, TFile, TTree, gRandom, TH1F, TH2F, TLegend
+from ROOT import gROOT, TCanvas, TF1, TFile, TTree, gRandom, TH1F, TH2F, TLegend, TLine
 
 #############################################################################################     
 # Get the number of entries in a tree after some cut:
@@ -39,6 +39,12 @@ def GetLegend(h1, names, title=None):
     for h, name in zip(h1, names):
         leg.AddEntry(h, name, 'L')
     return leg
+
+################################################################################## 
+# Get a TLine:
+def GetLine(l):
+    x1,y1,x2,y2= l
+    return TLine(x1,y1,x2,y2)
 
 #############################################################################################        
 # Save a figure
@@ -119,7 +125,7 @@ def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='',
                nbins=100, xmin=0, xmax=100,
                title='', xlabel='', ylabel='',
                col1=2, col2=4, log=False, norm=False, save=False, show=True,
-               stats=True, leg=False):
+               stats=True, leg=None, line=None):
     SetStatsBox(stats)
     if not var2:
         var2 = var
@@ -139,6 +145,10 @@ def Draw2Hists(c1, tree1, tree2, var='', var2=None, cut1='', cut2='',
     if leg:
         leg = GetLegend([h1, h2], leg)
         leg.Draw()
+    if line:
+        for l in line:
+            l = GetLine(l)
+            l.Draw()
     if log:
         c1.SetLogy(1)
     if show:
