@@ -4,7 +4,7 @@ from ROOT import gROOT, TCanvas, TF1, TFile, TTree, gRandom, TH1F, TH2F, TLegend
 #############################################################################################     
 # Get the number of entries in a tree after some cut:
 def GetEntries(tree, cut):
-    return float(tree.Draw("",cut))
+    return int(tree.Draw("",cut))
 
 #############################################################################################  
 # Whether or not to draw the statiscs box
@@ -28,7 +28,7 @@ def SetStatsBox(stats):
 #############################################################################################      
 # Get Legend Box:           
 def GetLegend(h1, names, title=None):
-    leg = TLegend(.7,.32,.94,.53)
+    leg = TLegend(.7,.62,.9,.82)
     if title:
         leg.SetHeader(title)
     leg.SetBorderSize(0)
